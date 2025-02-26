@@ -25,9 +25,18 @@ CURRENT_USER = -1
 MODELS = set()
 
 def resolve_config():
-    with open("config.json", "r") as f:
+    config_path = "config.json"
+    default_config = {"config": []}
+    
+    if not os.path.exists(config_path):
+        with open(config_path, "w") as f:
+            json.dump(default_config, f, indent=4)
+        print("config.json not found. Created default config.json")
+    
+    with open(config_path, "r") as f:
         config = json.load(f)
-    config_list = config.get('config')
+    
+    config_list = config.get('config', [])
     return config_list
 
 def init_session():
